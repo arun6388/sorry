@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sheetal Rathore - Special Message</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Georgia', 'Arial', sans-serif;
+            background: #0a0a2e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+        }
+
+        /* ═══════════════════════════════════════
+           DYNAMIC SCENERY
+           ═══════════════════════════════════════ */
+        .scenery {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.6); }
+            100% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .moon {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 55px;
+            animation: floatMoon 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px #ffd700);
+            z-index: 1;
+        }
+
+        @keyframes floatMoon {
+            0%, 100% { transform: translateY(0) rotate(-8deg); }
+            50% { transform: translateY(-18px) rotate(8deg); }
+        }
+
+        /* ═══════════════════════════════════════
+           MAIN WRAPPER - Proper Layout
+           ═══════════════════════════════════════ */
+        .main-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 12px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        /* ═══════════════════════════════════════
+           HEADER - Fixed height
+           ═══════════════════════════════════════ */
+        .header {
+            text-align: center;
+            flex-shrink: 0;
+            padding: 5px 0 8px;
+            animation: fadeInDown 1s ease;
+        }
+
+        .header h1 {
+            font-size: 1.8em;
+            color: #fff;
+            text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493, 0 0 60px #ff69b4;
+            margin-bottom: 2px;
+            animation: glow 2.5s ease-in-out infinite alternate;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 0.85em;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 15px #ffd700;
+            font-style: italic;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493; }
+            to { text-shadow: 0 0 35px #ff69b4, 0 0 70px #ff1493, 0 0 90px #ffd700; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════
+           PAGE CARD - Flexible height
+           ═══════════════════════════════════════ */
+        .page-container {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            min-height: 0;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+            animation: fadeIn 0.8s ease;
+            cursor: grab;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255,255,255,0.3) transparent;
+        }
+
+        .page-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .page-container::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+
+        .page-container:active {
+            cursor: grabbing;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.92) translateY(25px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Swipe animations */
+        .page-container.swipe-out-left {
+            animation: swipeOutLeft 0.35s ease forwards;
+        }
+        .page-container.swipe-out-right {
+            animation: swipeOutRight 0.35s ease forwards;
+        }
+        .page-container.swipe-in-left {
+            animation: swipeInLeft 0.5s ease forwards;
+        }
+        .page-container.swipe-in-right {
+            animation: swipeInRight 0.5s ease forwards;
+        }
+
+        @keyframes swipeOutLeft {
+            to { opacity: 0; transform: translateX(-120px) scale(0.9); }
+        }
+        @keyframes swipeOutRight {
+            to { opacity: 0; transform: translateX(120px) scale(0.9); }
+        }
+        @keyframes swipeInLeft {
+            from { opacity: 0; transform: translateX(120px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes swipeInRight {
+            from { opacity: 0; transform: translateX(-120px) scale(0.9); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+
+        /* ═══════════════════════════════════════
+           THEMES
+           ═══════════════════════════════════════ */
+        .theme-1 {
+            background: linear-gradient(145deg, rgba(102, 126, 234, 0.92), rgba(118, 75, 162, 0.92));
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+        .theme-2 {
+            background: linear-gradient(145deg, rgba(255, 107, 107, 0.9), rgba(255, 142, 83, 0.9));
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .theme-3 {
+            background: linear-gradient(145deg, rgba(46, 213, 115, 0.88), rgba(30, 144, 255, 0.9));
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+        .theme-4 {
+            background: linear-gradient(145deg, rgba(155, 89, 182, 0.9), rgba(241, 148, 138, 0.9));
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .theme-5 {
+            background: linear-gradient(145deg, rgba(250, 112, 154, 0.9), rgba(254, 225, 64, 0.85));
+            border-color: rgba(255, 255, 255, 0.55);
+        }
+        .theme-6 {
+            background: linear-gradient(145deg, rgba(72, 52, 212, 0.92), rgba(142, 68, 173, 0.92));
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        /* ═══════════════════════════════════════
+           PAGE INNER
+           ═══════════════════════════════════════ */
+        .page-inner {
+            padding: 18px 16px 22px;
+            color: #fff;
+            text-align: center;
+            font-style: italic;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.35);
+        }
+
+        .page-number {
+            position: sticky;
+            top: 8px;
+            float: right;
+            margin-right: 4px;
+            font-size: 0.7em;
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(0, 0, 0, 0.35);
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-style: normal;
+            z-index: 5;
+        }
+
+        .page-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ffd700;
+            margin-bottom: 14px;
+            text-shadow: 0 0 18px rgba(255, 215, 0, 0.8);
+            font-style: normal;
+            letter-spacing: 0.5px;
+            clear: both;
+        }
+
+        /* ═══════════════════════════════════════
+           MESSAGE BLOCKS
+           ═══════════════════════════════════════ */
+        .msg-block {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .msg-block:hover {
+            background: rgba(255, 255, 255, 0.18);
+            transform: scale(1.01);
+        }
+
+        .msg-line {
+            font-size: 0.92em;
+            line-height: 1.6;
+            margin-bottom: 4px;
+        }
+
+        .msg-line:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Stickers */
+        .sticker-row {
+            text-align: center;
+            margin: 6px 0 10px;
+            font-size: 1.8em;
+            animation: bounceSticker 2.5s ease-in-out infinite;
+        }
+
+        .sticker-row.small {
+            font-size: 1.3em;
+            margin: 4px 0 8px;
+        }
+
+        @keyframes bounceSticker {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* Sayri blocks */
+        .sayri-block {
+            background: rgba(255, 215, 0, 0.12);
+            border-left: 3px solid #ffd700;
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            line-height: 1.7;
+        }
+
+        .sayri-block .sayri-emoji {
+            font-size: 1.3em;
+            display: block;
+            margin-top: 5px;
+            animation: floatEmoji 3s ease-in-out infinite;
+        }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+        }
+
+        /* Highlight block */
+        .highlight-block {
+            background: rgba(255, 105, 180, 0.2);
+            border: 2px solid rgba(255, 105, 180, 0.5);
+            border-radius: 14px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+            line-height: 1.7;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+
+        /* ═══════════════════════════════════════
+           NAVIGATION - Fixed at bottom
+           ═══════════════════════════════════════ */
+        .nav-section {
+            flex-shrink: 0;
+            padding: 10px 0 4px;
+            width: 100%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+
+        .nav-btn {
+            padding: 9px 18px;
+            font-size: 0.82em;
+            font-weight: bold;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ff69b4, #ff1493);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
+            font-family: inherit;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 20, 147, 0.75);
+        }
+
+        .nav-btn:active:not(:disabled) {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .page-indicator {
+            font-size: 0.8em;
+            color: #ffd700;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.45);
+            padding: 7px 16px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            min-width: 65px;
+            text-align: center;
+        }
+
+        .swipe-hint {
+            margin-top: 6px;
+            font-size: 0.72em;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            animation: pulse 2.2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.45; }
+            50% { opacity: 1; }
+        }
+
+        /* Footer name */
+        .footer-name {
+            margin-top: 6px;
+            font-size: 0.9em;
+            color: #ffd700;
+            font-weight: bold;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            letter-spacing: 1px;
+            animation: glow 2.5s ease-in-out infinite alternate;
+            flex-shrink: 0;
+        }
+
+        /* Floating hearts */
+        .heart {
+            position: fixed;
+            font-size: 18px;
+            animation: floatUp 9s linear infinite;
+            pointer-events: none;
+            z-index: 3;
+            opacity: 0.6;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-120px) rotate(360deg); opacity: 0; }
+        }
+
+        /* ═══════════════════════════════════════
+           RESPONSIVE - Mobile First
+           ═══════════════════════════════════════ */
+        @media (max-width: 480px) {
+            .main-wrapper { padding: 8px 10px; }
+            .header h1 { font-size: 1.5em; }
+            .header p { font-size: 0.78em; }
+            .page-inner { padding: 14px 12px 18px; }
+            .page-title { font-size: 1.1em; margin-bottom: 10px; }
+            .msg-line { font-size: 0.85em; line-height: 1.55; }
+            .msg-block { padding: 10px 12px; margin-bottom: 8px; }
+            .sayri-block { font-size: 0.88em; padding: 10px 12px; }
+            .highlight-block { font-size: 0.88em; padding: 10px 12px; }
+            .sticker-row { font-size: 1.5em; }
+            .sticker-row.small { font-size: 1.1em; }
+            .nav-btn { padding: 8px 14px; font-size: 0.75em; }
+            .page-indicator { font-size: 0.72em; padding: 6px 12px; }
+            .moon { font-size: 40px; top: 12px; right: 12px; }
+            .footer-name { font-size: 0.8em; }
+            .swipe-hint { font-size: 0.65em; }
+        }
+
+        @media (max-height: 600px) {
+            .header h1 { font-size: 1.3em; }
+            .header p { font-size: 0.75em; }
+            .header { padding: 2px 0 4px; }
+            .nav-section { padding: 6px 0 2px; }
+            .swipe-hint { display: none; }
+            .footer-name { font-size: 0.75em; margin-top: 3px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Scenery -->
+    <div class="scenery">
+        <div class="moon">🌙</div>
+    </div>
+
+    <!-- Hearts -->
+    <div id="hearts-container"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <h1>💖 Sheetal Rathore 💖</h1>
+            <p>Meri Chand Si Pyari Best Friend 🌙</p>
+        </div>
+
+        <!-- Page Card -->
+        <div class="page-container theme-1" id="pageCard">
+            <div class="page-inner" id="pageInner"></div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-section">
+            <div class="nav-buttons">
+                <button class="nav-btn" id="prevBtn" onclick="changePage(-1)">◀ Prev</button>
+                <div class="page-indicator" id="pageIndicator">1 / 6</div>
+                <button class="nav-btn" id="nextBtn" onclick="changePage(1)">Next ▶</button>
+            </div>
+            <div class="swipe-hint">👆 Swipe to change page 👆</div>
+            <div class="footer-name">💖 - Arun Rathore 💖</div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════
+        // ALL PAGES DATA
+        // ═══════════════════════════════════════
+        const pages = [
+            // Page 1 - Original Sorry Message
+            {
+                theme: 'theme-1',
+                title: '😔 Sorry Sheetal 😔',
+                html: `
+                    <div class="sticker-row">😔🙏💝</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Sheetal, yaar... Main jaanta hun tum mujhse gussa ho 🤕</div>
+                        <div class="msg-line">Par please ek baar toh suno na... 😥</div>
+                    </div>
+                    
+                    <div class="sticker-row small">😢</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Tumhari muskurahat meri duniya ki sabse khoobsurat cheez hai ✨</div>
+                        <div class="msg-line">Tumhare bina toh sab adhura sa lagta hai... 🌸</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🥺</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Main jaanta hun maine galti ki hai 😔</div>
+                        <div class="msg-line">Par ek mauka de do na... Main sach mein sorry kehna chahta hun 🙏</div>
+                    </div>
+                    
+                    <div class="sticker-row small">❤️</div>
+                `
+            },
+            
+            // Page 2 - New Sorry Lines
+            {
+                theme: 'theme-2',
+                title: '🙏 Maafi Ki Ummeed 🙏',
+                html: `
+                    <div class="sticker-row">😞🤕💔</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Maine socha bhi nahi tha ki tum itna gussa hogi 😔</div>
+                        <div class="msg-line">Main maanta hun ki mera behavior thik nahi tha... 🤕</div>
+                    </div>
+                    
+                    <div class="sticker-row small">😞</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Please meri ek galti ke liye humari dosti ko khatra mat banao 💔</div>
+                        <div class="msg-line">Tumhari dosti se zyada precious mere liye kuch nahi hai 💎</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🙇‍♂️</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Main promise karta hun aage se kabhi aisa nahi hoga 🤞</div>
+                        <div class="msg-line">Bas ek chance de do... Main sab theek kar dunga 🥰</div>
+                    </div>
+                    
+                    <div class="sticker-row small">💝</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">Tumhare bina toh meri life incomplete hai 🌈</div>
+                        <div class="msg-line">Please na... Maaf kar do... Main tumse dosti nahi kho sakta 😭</div>
+                    </div>
+                    
+                    <div class="sticker-row">🤗😇💕</div>
+                `
+            },
+            
+            // Page 3 - Sayri
+            {
+                theme: 'theme-3',
+                title: '🌹 Dil Ki Baatein 🌹',
+                html: `
+                    <div class="sticker-row">🌙✨🌟</div>
+                    
+                    <div class="sayri-block">
+                        "चाँद के आने से चाँदनी आ जाएंगी,<br>
+                        आपके मुस्कुराने से रौशनी आ जाएंगी..."
+                        <span class="sayri-emoji">🌙✨🌟</span>
+                    </div>
+                    
+                    <div class="sayri-block">
+                        "हर दिन तुम्हारी यादों का इंतज़ार करता है,<br>
+                        हर पल तुम्हारे साथ बिताना चाहता है..."
+                        <span class="sayri-emoji">💫🌠💖</span>
+                    </div>
+                    
+                    <div class="sayri-block">
+                        "तुम्हारी हंसी है जैसे बहारों की बहार,<br>
+                        तुम्हारा साथ है मेरी जिंदगी का आधार..."
+                        <span class="sayri-emoji">🌸🌺🌼</span>
+                    </div>
+                    
+                    <div class="sayri-block">
+                        "दिल की हर धड़कन तुम्हारा नाम लेती है,<br>
+                        तुम्हारी दोस्ती से ही मेरी दुनिया चलती है..."
+                        <span class="sayri-emoji">💓💞💘</span>
+                    </div>
+                    
+                    <div class="sticker-row">🤗💝🌹</div>
+                `
+            },
+            
+            // Page 4 - Sorry + Tarif
+            {
+                theme: 'theme-4',
+                title: '🌟 Sorry Aur Tarif 🌟',
+                html: `
+                    <div class="sticker-row">😔🌟💖</div>
+                    
+                    <div class="highlight-block">
+                        <div class="msg-line">तुम्हारा दिल दुखाना मेरी सबसे बड़ी गलती थी 😔</div>
+                        <div class="msg-line">अब खुद से नफरत होती है इस बात पे मुझे 💔</div>
+                    </div>
+                    
+                    <div class="sticker-row small">💔</div>
+                    
+                    <div class="highlight-block">
+                        <div class="msg-line">तुम्हारी आँखों में आंसू देखकर टूट गया मैं 😢</div>
+                        <div class="msg-line">माफ कर दो यार, बस एक बार फिर से मुस्करा दो 😊</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🌙</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">तुम्हारी मुस्कान चाँद से भी सुंदर है 🌙</div>
+                        <div class="msg-line">तुम्हारा दिल हीरों से भी कीमती है 💎</div>
+                    </div>
+                    
+                    <div class="sticker-row small">👸</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">तुम हो जैसे ख्वाबों की रानी 👸</div>
+                        <div class="msg-line">तुम्हारी दोस्ती है सबसे अनमोल 🌟</div>
+                    </div>
+                    
+                    <div class="sticker-row">💎✨👑</div>
+                `
+            },
+            
+            // Page 5 - Chand Comparison
+            {
+                theme: 'theme-5',
+                title: '🌙 Chand Se Bhi Sundar 🌙',
+                html: `
+                    <div class="sticker-row">🌙⭐💫</div>
+                    
+                    <div class="sayri-block">
+                        "Sorry चाँद जी, मेरी बेस्ट फ्रेंड आपसे ज्यादा सुंदर है 🌟<br>
+                        क्योंकि वो खुद चाँद है, बस धरती पर उतर आई है... ✨"
+                        <span class="sayri-emoji">🌙⭐💫</span>
+                    </div>
+                    
+                    <div class="sayri-block">
+                        "चाँद की चांदनी भी फीकी पड़ जाती है 🌕<br>
+                        जब वो अपनी प्यारी सी मुस्कान दिखाती है... 😊"
+                        <span class="sayri-emoji">🌠🌟💖</span>
+                    </div>
+                    
+                    <div class="sayri-block">
+                        "आसमान का चाँद तो रोज निकलता है 🌙<br>
+                        पर मेरी शीतल जैसी दोस्त हर किसी को नसीब नहीं होती... 💝"
+                        <span class="sayri-emoji">🌸🌺🎀</span>
+                    </div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">माफी मांगने को तैयार हूं हज़ार बार 🙏</div>
+                        <div class="msg-line">बस तुम मेरी दोस्त बनी रहो यार 🔄</div>
+                    </div>
+                    
+                    <div class="sticker-row">🌙💖✨</div>
+                `
+            },
+            
+            // Page 6 - Love + Smile
+            {
+                theme: 'theme-6',
+                title: '💖 Special Love & Smile 💖',
+                html: `
+                    <div class="sticker-row">🥰💕😊</div>
+                    
+                    <div class="highlight-block">
+                        <div class="msg-line">तुम्हारी मुस्कान में जादू है शीतल 💫</div>
+                        <div class="msg-line">जो मेरा सारा गुस्सा भुला देता है 🥰</div>
+                    </div>
+                    
+                    <div class="sticker-row small">😊</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">तुम हो मेरी सबसे प्यारी दोस्त 💝</div>
+                        <div class="msg-line">तुम्हारे बिना सब सूना सूना है 🌈</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🌈</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">तुम्हारी हंसी से रोशन है मेरी दुनिया ✨</div>
+                        <div class="msg-line">तुम्हारी दोस्ती से जीती है मेरी ज़िंदगी 🌸</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🌸</div>
+                    
+                    <div class="highlight-block">
+                        <div class="msg-line">तुम्हें देखकर हर दर्द भूल जाता हूं 😊</div>
+                        <div class="msg-line">तुम्हारी मुस्कान ही मेरी दुआ है 🤲</div>
+                    </div>
+                    
+                    <div class="sticker-row small">🤲</div>
+                    
+                    <div class="msg-block">
+                        <div class="msg-line">तुम हमेशा मुस्कुराती रहो 🥰</div>
+                        <div class="msg-line">तुम्हारी दोस्ती हमेशा बनी रहे 💕</div>
+                    </div>
+                    
+                    <div class="sticker-row">🥰💕😊✨</div>
+                `
+            }
+        ];
+
+        let currentPage = 0;
+        const totalPages = pages.length;
+        let isAnimating = false;
+
+        // ═══════════════════════════════════════
+        // Render Page
+        // ═══════════════════════════════════════
+        function renderPage(index) {
+            const pageCard = document.getElementById('pageCard');
+            const pageInner = document.getElementById('pageInner');
+            const pageIndicator = document.getElementById('pageIndicator');
+
+            pageInner.innerHTML = `
+                <div class="page-number">${index + 1} / ${totalPages}</div>
+                <div class="page-title">${pages[index].title}</div>
+                ${pages[index].html}
+            `;
+
+            pageCard.className = 'page-container ' + pages[index].theme;
+            pageIndicator.textContent = `${index + 1} / ${totalPages}`;
+            document.getElementById('prevBtn').disabled = (index === 0);
+            document.getElementById('nextBtn').disabled = (index === totalPages - 1);
+            pageCard.scrollTop = 0;
+        }
+
+        // ═══════════════════════════════════════
+        // Change Page
+        // ═══════════════════════════════════════
+        function changePage(direction) {
+            if (isAnimating) return;
+            const newPage = currentPage + direction;
+            if (newPage < 0 || newPage >= totalPages) return;
+
+            isAnimating = true;
+            const pageCard = document.getElementById('pageCard');
+            const outClass = direction > 0 ? 'swipe-out-left' : 'swipe-out-right';
+            pageCard.classList.add(outClass);
+
+            setTimeout(() => {
+                currentPage = newPage;
+                renderPage(currentPage);
+                pageCard.classList.remove(outClass);
+                const inClass = direction > 0 ? 'swipe-in-left' : 'swipe-in-right';
+                pageCard.classList.add(inClass);
+                setTimeout(() => {
+                    pageCard.classList.remove(inClass);
+                    isAnimating = false;
+                }, 500);
+            }, 350);
+        }
+
+        // ═══════════════════════════════════════
+        // Swipe Support
+        // ═══════════════════════════════════════
+        let touchStartX = 0, touchStartY = 0, isDragging = false;
+        const card = document.getElementById('pageCard');
+
+        card.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isDragging = true;
+        }, { passive: true });
+
+        card.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const diffX = touchStartX - e.changedTouches[0].clientX;
+            const diffY = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+                changePage(diffX > 0 ? 1 : -1);
+            }
+        }, { passive: true });
+
+        card.addEventListener('mousedown', (e) => {
+            touchStartX = e.clientX;
+            touchStartY = e.clientY;
+            isDragging = true;
+        });
+
+        card.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            const diffX = touchStartX - e.clientX;
+            const diffY = touchStartY - e.clientY;
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+                changePage(diffX > 0 ? 1 : -1);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changePage(-1);
+            if (e.key === 'ArrowRight') changePage(1);
+        });
+
+        // ═══════════════════════════════════════
+        // Stars & Hearts
+        // ═══════════════════════════════════════
+        function createStars() {
+            const scenery = document.querySelector('.scenery');
+            for (let i = 0; i < 90; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+                scenery.appendChild(star);
+            }
+        }
+
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const hearts = ['💖', '💕', '💗', '💝', '🌸', '✨', '💫', '🌙', '💘', '😊'];
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                heart.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 9000);
+            }, 750);
+        }
+
+        // ═══════════════════════════════════════
+        // Initialize
+        // ═══════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createHearts();
+            renderPage(0);
+        });
+    </script>
+</body>
+</html>
